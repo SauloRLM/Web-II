@@ -1,4 +1,4 @@
-//Ejercicios basicos de Typescript
+//Ejercicios basicos de Typescript Ejemplos Semana 1
 //Lopez Mercado Saulo Ramon 4/9/2019
 //funcion
 function saludar(nombre) {
