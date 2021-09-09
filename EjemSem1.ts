@@ -45,7 +45,6 @@ estudiante = ["Saulo Ramon",21];
 console.log(`El Nombre del Estudiante es ${estudiante[0]}`);
 console.log(`Su Edad es ${estudiante[1]}`);
 
-//
 
 //Enums
 enum Marcacarro{
