@@ -78,6 +78,7 @@ function loopinfinito(): never {
     while(true){}
 }
 
+//
 
 
 //Tipo Objects
