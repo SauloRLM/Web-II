@@ -41,7 +41,7 @@ function f2(n?: number){
 }
 
 function f3(n=0){
-    console.log(n.toFixed()); //no se especifican argumentos
+    console.log(n.toFixed()); //no se especifican argumentos 
     console.log(n.toFixed(3)); //se especifica un argumento
 }
 //PARAMETROS OPCIONALES EN LOS CALLBACKS---------------------------------------------
