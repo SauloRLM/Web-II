@@ -1,5 +1,6 @@
 // Ejmeplos de typescript Semana 2 del 5/09/2021 a 13/09/2021
 //López Mercado Saulo Ramón
+//
 var _this = this;
 var Caballo = /** @class */ (function () {
     function Caballo(nombre) {
