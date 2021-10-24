@@ -1,4 +1,5 @@
 // Lopez Mercado Saulo Ramon 12/09/2021
+//402 software
 // Tarea ejempplo de la diferiencia de  Extens y Inserccio en interfaces
 //tarea una permite redefinir una nueva propiedad y otra no.
 //extends o intersection ?
