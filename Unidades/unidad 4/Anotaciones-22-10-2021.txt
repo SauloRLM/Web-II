@@ -1,0 +1,31 @@
+Aplicacion meteorologica PWA con Angular Service Worker.
+Progressive Web Apps (PWA)es una coleccion de tecnicas web para crear aplicaciones web con consideraciones previas en mente. una tecnica particular es el trabajador de servicios, que mejora el tiempo de carga, permite trabajar fuera de linea.
+
+
+Lo que Haremos:
+.configurar la API de OpenWeather
+.Visualizador de datos meteorologicos
+.Habilitar el modo fuera de linea con el servicio workwe.
+.Mantenerse  al dia con las notificaciones en la aplicacion.
+.Publicar nuestra aplicacion con Firebase Hosting
+
+
+Las app PWA comparten caracteristicas de app web y nativas.
+tine que tener 3 cracteristicas:
+    -Capaz
+    -Confiable
+    -Instalable
+
+Service worker (actua como proxy entr la aplicacion y un dispositivo externo).
+el trabajo principal es el interceptar las solicitudes a esos recursos y actuar en consecuencia proporcionando una respuesta en cache o en vivo.
+
+Angular proporciona el Service worker que podemos usar para convertir 
+
+Observables se basan en el patron de observador, que es el nucleo de la programacion funcional reactiva. varios objetos llamados observadores pueden subscribirse a un observable y recibir notificaciones sobre cualquier cambio.
+
+libro (patrones de diseño):
+son soluciones probadas aceptadas por la comunidad para problemas comunes.
+
+Angulalr material pra utilizarlo como diseño
+
+"subscribe" caando me respondas.
