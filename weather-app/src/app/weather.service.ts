@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Weather } from './weather';
 
-
 @Injectable({
   providedIn: 'root'
 })
+
 export class WeatherService {
 
   constructor(private http: HttpClient) { }
