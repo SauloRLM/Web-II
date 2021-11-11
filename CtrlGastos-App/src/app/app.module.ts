@@ -10,6 +10,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { PrincipalModule } from './principal/principal.module';
 import { TucuentaModule } from './tucuenta/tucuenta.module';
+import { GastosModule} from './gastos/gastos.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { TucuentaModule } from './tucuenta/tucuenta.module';
     CoreModule,
     SharedModule,
     PrincipalModule,
-    TucuentaModule
+    TucuentaModule,
+    GastosModule
   ],
   providers: [],
   bootstrap: [AppComponent]
