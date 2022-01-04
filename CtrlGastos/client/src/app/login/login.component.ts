@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {  
-
+  
   constructor(private APIphp: CtrlGastosServiceService, private ruteador:Router) { }
 
   ngOnInit(): void {
@@ -18,20 +18,31 @@ export class LoginComponent {
   
   ingresar(user: string, password: string){
     
-    console.log(user + password);
-    this.ruteador.navigateByUrl('/principal');
+    console.log(user);
+    console.log(password);
+    //this.ruteador.navigateByUrl('/principal');    
+    this.APIphp.checkUser(user,password).subscribe(datos => {
+      console.log(datos);
 
-/*
-    this.APIphp.checkUser(user,password).subscribe(datos => {            
-      if((datos['resultado'] == 'SiAccede')) {        
-       
+      if(user == "" || password == ""){
+        alert("No deje espacios en blanco");
+        this.ruteador.navigateByUrl('/login');
       }else{
-    console.log("--no se pudo acceder");
-      }
-    });    */
+        if((datos['resultado'] == 'SiAccede')) {        
+          
+         // this.APIphp.setMyuser(user); //si si accede se modifica la variable global usuario          
+          //console.log(user);
+
+          this.ruteador.navigateByUrl('/principal');  //se accede a principal
+          
+        }else if((datos['resultado'] == 'Erorr')||(datos['resultado'] == 'NoAccede')){
+          console.log("--no se pudo acceder");
+          alert((datos['mesaje']));
+          this.ruteador.navigateByUrl('/login');
+        }
+      }                  
+    });   
 
   }
 
 }
-
-
