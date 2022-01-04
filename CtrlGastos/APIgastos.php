@@ -190,4 +190,15 @@ if(isset($_GET["Cambiarclave"])){
         echo json_encode($response);
         exit();  
     }
+
+//Mostrar todos los gastos xD
+if(isset($_GET["MostrarGastosIn"])){
+    $cuery = "SELECT * FROM articulos ";                        
+    $result = mysqli_query($con,$cuery);  
+    
+    $row = mysqli_fetch_all($result,MYSQLI_ASSOC);
+    echo json_encode($row);
+    exit();
+}
+
 ?>

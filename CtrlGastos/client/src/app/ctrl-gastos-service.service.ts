@@ -10,7 +10,7 @@ export class CtrlGastosServiceService {
    url = 'http://localhost/APIphp/';
   
   //variable que guarda un usuario
-  usuario: string = 'sin nombre';
+  usuarioLog: string = 'sin nombre';
 
    constructor(private http: HttpClient) {  
     // this.usuario = "null";
@@ -22,12 +22,12 @@ export class CtrlGastosServiceService {
    
    //metodo del login
   checkUser(user: string,password: string):Observable<any>{    
-    this.usuario = user;           
+    this.usuarioLog = user;           
     return this.http.get(`${this.url}APIgastos.php?iniciosesion=1&user=${user}&pas=${password}`);    
   } 
 
   getMyuser(): string{
-      return this.usuario;
+      return this.usuarioLog;
    }
 
    //metodo para registrar usuario
@@ -44,6 +44,23 @@ export class CtrlGastosServiceService {
   //metodo para cambiar la contraseña del usuario
   cambiarClave(user: string,pas: string):Observable<any>{
     return this.http.get(`${this.url}APIgastos.php?Cambiarclave=1&user=${user}&pas=${pas}`);
+  }
+
+  //ejemplo de la tabla
+  mostrarTodos(){
+    return this.http.get(`${this.url}APIgastos.php?MostrarGastosIn=1`);
+  }
+  agregar(usuario:any){
+    return this.http.post(`${this.url}agregar.php`, JSON.stringify(usuario));
+  }
+  eliminar(id_usuario:number){
+    return this.http.get(`${this.url}eliminar.php?id_usuario=${id_usuario}`);
+  }
+  seleccionar(id_usuario:number){
+    return this.http.get(`${this.url}seleccionar.php?id_usuario=${id_usuario}`);
+  }
+  update(usuario:any){
+    return this.http.post(`${this.url}update.php`, JSON.stringify(usuario));
   }
 
 }
