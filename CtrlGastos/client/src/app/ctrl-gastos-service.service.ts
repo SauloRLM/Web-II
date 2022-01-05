@@ -46,21 +46,34 @@ export class CtrlGastosServiceService {
     return this.http.get(`${this.url}APIgastos.php?Cambiarclave=1&user=${user}&pas=${pas}`);
   }
 
+  
+
+  //todo los metodos de gastos personales-------------------------------
+  //numero de registros
+  NumGastos(user: string):Observable<any>{
+      return this.http.get(`${this.url}APIgastos.php?NumGastos=1&user=${user}`);
+  }
+  
   //ejemplo de la tabla
-  mostrarTodos(){
-    return this.http.get(`${this.url}APIgastos.php?MostrarGastosIn=1`);
+  mostrarTodos(user: string){
+    return this.http.get(`${this.url}APIgastos.php?MostrarGastosIn=1&user=${user}`);
   }
-  agregar(usuario:any){
-    return this.http.post(`${this.url}agregar.php`, JSON.stringify(usuario));
+  
+  EliminarGasto(idgasto: string, user:string):Observable<any>{
+    return this.http.get(`${this.url}APIgastos.php?EliminarGasto=1&idgasto=${idgasto}&user=${user}`);
   }
-  eliminar(id_usuario:number){
-    return this.http.get(`${this.url}eliminar.php?id_usuario=${id_usuario}`);
+
+  SeleccionarGasto(idgasto: string, user:string):Observable<any>{
+    return this.http.get(`${this.url}APIgastos.php?SeleccionarGasto=1&idgasto=${idgasto}&user=${user}`);
   }
-  seleccionar(id_usuario:number){
-    return this.http.get(`${this.url}seleccionar.php?id_usuario=${id_usuario}`);
+
+  AgregarGasto(nom: string, desc:string, adeudo:string, tipo:string, ven:string, user:string):Observable<any>{
+    return this.http.get(`${this.url}APIgastos.php?AgregarGasto=1&nom=${nom}&desc=${desc}&deu=${adeudo}&tipo=${tipo}&ven=${ven}&user=${user}`);
   }
-  update(usuario:any){
-    return this.http.post(`${this.url}update.php`, JSON.stringify(usuario));
+
+  //solo me falta el actualizar xD
+  ActualizarGasto(idgas:string,nom: string, desc:string, adeudo:string, tipo:string, ven:string, user:string):Observable<any>{
+    return this.http.get(`${this.url}APIgastos.php?ActualizarGasto=1&id=${idgas}&nom=${nom}&desc=${desc}&deu=${adeudo}&tipo=${tipo}&ven=${ven}&user=${user}`);
   }
 
 }
