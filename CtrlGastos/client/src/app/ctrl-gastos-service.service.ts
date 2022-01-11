@@ -64,9 +64,14 @@ export class CtrlGastosServiceService {
   //Numero de datos de clasificaciones del historial del usuario
   NumDatoclasi(user: string):Observable<any>{
     return this.http.get(`${this.url}APIgastos.php?NumDatoClasi=1&user=${user}`);
-}
+  }
 
-  //ejemplo de la tabla
+  //Numero de usuarios que gastan mas por categoria en gastos personales
+  NumCatUser(user: string):Observable<any>{
+    return this.http.get(`${this.url}APIgastos.php?NumUseCat=1&user=${user}`);
+  }
+
+  //ejemplo de la tabla gastos personales
   MostrarGastp(user: string){
     return this.http.get(`${this.url}APIgastos.php?MostrarGastosIn=1&user=${user}`);
   }
@@ -87,5 +92,14 @@ export class CtrlGastosServiceService {
   ActualizarGasto(idgas:string,nom: string, desc:string, adeudo:string, tipo:string, ven:string, user:string):Observable<any>{
     return this.http.get(`${this.url}APIgastos.php?ActualizarGasto=1&id=${idgas}&nom=${nom}&desc=${desc}&deu=${adeudo}&tipo=${tipo}&ven=${ven}&user=${user}`);
   }
+
+    //Gestion de Usuarios ------------------------------------------------------------------------------------------------
+    MostrarUsers(user: string){
+      return this.http.get(`${this.url}APIgastos.php?MostrarUsuarios=1&user=${user}`);
+    }
+    
+    DesUsers(id:string):Observable<any>{
+      return this.http.get(`${this.url}APIgastos.php?DesabilitarUsuario=1&iduser=${id}`);
+    }
 
 }

@@ -86,7 +86,7 @@ if(isset($_GET["iniciosesion"])){
         //exit();
 	}else{		        
 	    //  echo '<script> alert("logrado mandastes datos de typescript a php para su consulta a la BD !! "); </script>';	
-	    $cuery = "SELECT * FROM tbusers WHERE user = '".$user."'";                        
+	    $cuery = "SELECT * FROM tbusers WHERE estatus = 'A' AND user = '".$user."'";                        
 	    $result = mysqli_query($con,$cuery);
         while ($row = mysqli_fetch_array($result)){                                                                
             $pasw = "".$row['pass'];                        
@@ -103,7 +103,7 @@ if(isset($_GET["iniciosesion"])){
             }	        
 	    }else{            
 		    $resp = 'NoAccede';
-            $mesaje = 'Error usuario no registrado ';            
+            $mesaje = 'Error usuario no registrado o Desabilitado por el Administrador ';            
         }        
         //para cerrar la conexion
         mysqli_close($con);    
@@ -435,5 +435,84 @@ if(isset($_GET["NumDatoClasi"])){
     echo json_encode($response);
     exit();  
 }
+
+//numero de tuplas por clasificacion por usuario logeado
+if(isset($_GET["NumUseCat"])){
+    $user = $_GET["user"];   //usuario AdminAdmin 
+    
+    //empezamos por divercion    
+    $cuery = "SELECT * FROM gastosper WHERE tipo = 'Diversion'";  //AND usuario = '".$user."'
+    $result = mysqli_query($con,$cuery);
+    $numdiv = mysqli_num_rows($result);                    
+    $resp = 'OK';            
+
+    //comida
+    $cuery = "SELECT * FROM gastosper WHERE tipo = 'Comida'";  // AND usuario = '".$user."'                      
+    $result = mysqli_query($con,$cuery);
+    $numcom = mysqli_num_rows($result);                        
+
+    //salud
+    $cuery = "SELECT * FROM gastosper WHERE tipo = 'Salud'";  //AND usuario = '".$user."'                      
+    $result = mysqli_query($con,$cuery);
+    $numsal = mysqli_num_rows($result);                        
+    
+    //hogar
+    $cuery = "SELECT * FROM gastosper WHERE tipo = 'Hogar'"; //AND usuario = '".$user."'                       
+    $result = mysqli_query($con,$cuery);
+    $numho = mysqli_num_rows($result);                        
+    
+    //otro
+    $cuery = "SELECT * FROM gastosper WHERE tipo = 'Otro'"; // AND usuario = '".$user."'                       
+    $result = mysqli_query($con,$cuery);
+    $numot = mysqli_num_rows($result);                        
+            
+    //para cerrar la conexion
+    mysqli_close($con);   
+
+    $response = ['resultado' => $resp, 'diver' => $numdiv, 'comida' => $numcom, 'salud' => $numsal, 'hogar' => $numho, 'otro' => $numot ] ;
+    echo json_encode($response);
+    exit();  
+}
+
+//modulo de gestion de usuarios
+if(isset($_GET["MostrarUsuarios"])){
+    $user = $_GET["user"];
+
+    $cuery = "SELECT * FROM tbusers WHERE user != '$user' ORDER BY idusers ASC ";                        
+    $result = mysqli_query($con,$cuery);          
+    $row = mysqli_fetch_all($result,MYSQLI_ASSOC);
+    
+    //para cerrar la conexion    
+    mysqli_close($con);   
+    echo json_encode($row);
+    exit();
+}
+
+//desabilitar usuario
+if(isset($_GET["DesabilitarUsuario"])){
+    $iduser = $_GET["iduser"];
+
+    $cuery = "SELECT * FROM tbusers WHERE idusers = $iduser ";                        
+    $result = mysqli_query($con,$cuery);              
+    $numrow = mysqli_num_rows($result);                
+    
+    if($numrow > 0) {
+
+        $cuery = "UPDATE tbusers SET estatus = 'B' WHERE idusers = '$iduser'";
+        $result = mysqli_query($con,$cuery);                                   
+
+        $resp = 'OK';                
+        $response = ['resultado' => $resp ]; 
+        
+    }else{            
+        $resp = 'Error Especifique un id de usuario Valido';                
+        $response = ['resultado' => $resp] ;
+    }        
+    //para cerrar la conexion
+    mysqli_close($con);                            
+    echo json_encode($response);
+    exit();            
+}
+
 
 ?>
