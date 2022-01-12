@@ -436,7 +436,114 @@ if(isset($_GET["NumDatoClasi"])){
     exit();  
 }
 
-//numero de tuplas por clasificacion por usuario logeado
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
+if(isset($_GET["CrearGrupo"])){
+    $body = file_get_contents("php://input");
+    
+    $nom=$_GET["nombre"];
+    $desc=$_GET["desc"];
+    $user=$_GET["user"];
+    //fecha de registro
+    $status = "A";
+
+        if($nom == "" || $desc == "" || $user == "" ||  $status == ""){
+            $resp = 'No';
+            $mesaje = 'Error no deje campos en blanco';     
+        }else{       
+                $cuery = "SELECT * FROM tbgroup WHERE namegp = '".$nom."'";                        
+                $result = mysqli_query($con,$cuery);
+                $numrow = mysqli_num_rows($result);                        
+		if($numrow > 0) {                                              
+                    $resp = 'No';
+                    $mesaje = 'Error El nombre de grupo ya existe';                                 
+                            
+                }else{                        
+
+                    $cuery = "INSERT INTO tbgroup(namegp,descripcion,user,fechacreac,status) VALUES('$nom','$desc', '$user',current_date(), '$status')";              
+                    $result = mysqli_query($con,$cuery);
+                    $resp = 'Si';
+                    $mesaje = 'Se agrego correctamente'; 
+                }
+        } 
+         //para cerrar la conexion
+         mysqli_close($con);   
+        $response = ['resultado' => $resp, 'mesaje' => $mesaje  ] ;
+        echo json_encode($response);        
+        exit();
+} 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
+if(isset($_GET["MostrarGrupos"])){
+    $user = $_GET["user"];
+
+    //sin ASC es de mayor a menor
+    $cuery = "SELECT * FROM tbpergpo WHERE user = '$user'";                        
+    $result = mysqli_query($con,$cuery);          
+    $row = mysqli_fetch_all($result,MYSQLI_ASSOC);
+    
+    //para cerrar la conexion    
+    mysqli_close($con);   
+    echo json_encode($row);
+    exit();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
+if(isset($_GET["AñadirAGpo"])){
+    $body = file_get_contents("php://input");
+    
+    $grupo=$_GET["grupo"];
+    $nomuser=$_GET["nomuser"];
+    $cantidad=$_GET["cantidad"];
+    //fecha de registro
+
+        if($grupo == "" || $nomuser == "" || $cantidad == ""){
+            $resp = 'No';
+            $mesaje = 'Error no deje campos en blanco';     
+        }else{       
+                $cuery = "SELECT * FROM tbusers WHERE user = '".$nomuser."'";                        
+                $result = mysqli_query($con,$cuery);
+                $numrow = mysqli_num_rows($result);                        
+		if($numrow > 0) {       
+		    $cuery = "SELECT * FROM tbpergpo WHERE user = '".$nomuser."' AND namegp = '".$grupo."'";                        
+                    $result = mysqli_query($con,$cuery);
+                    $numrow = mysqli_num_rows($result);   
+		    if($numrow > 0) {                               
+                    	$resp = 'No';
+                    	$mesaje = 'Error El usuario ya existe en este grupo';                         
+                    }else{
+			$cuery = "INSERT INTO tbpergpo(namegp,user,cantidad,fecharegis) VALUES('$grupo','$nomuser', '$cantidad',current_date())";              
+                    	$result = mysqli_query($con,$cuery);
+                    	$resp = 'Si';
+                    	$mesaje = 'Se agrego correctamente';
+		    }        
+                }else{                        
+		    $resp = 'No';
+                    $mesaje = 'Error El usuario no existe';
+                    
+                }
+        } 
+         //para cerrar la conexion
+         mysqli_close($con);   
+        $response = ['resultado' => $resp, 'mesaje' => $mesaje  ] ;
+        echo json_encode($response);        
+        exit();
+} 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Mostrar todos los gastos xD
+if(isset($_GET["MostrarInGpo"])){
+    $grupo = $_GET["grupo"];
+
+    $cuery = "SELECT * FROM tbpergpo WHERE namegp =  '".$grupo."'";                        
+    $result = mysqli_query($con,$cuery);          
+    $row = mysqli_fetch_all($result,MYSQLI_ASSOC);
+    
+    //para cerrar la conexion    
+    mysqli_close($con);   
+
+    echo json_encode($row);
+    exit();
+}
+//-----------------------------------------------------------------------------------------------------------
+
+//numero de tuplas por clasificacion todos los usuarios
 if(isset($_GET["NumUseCat"])){
     $user = $_GET["user"];   //usuario AdminAdmin 
     
@@ -474,7 +581,8 @@ if(isset($_GET["NumUseCat"])){
     exit();  
 }
 
-//modulo de gestion de usuarios
+//modulo de gestion de usuarios-------------------------------------------------
+//mostrar usuarios
 if(isset($_GET["MostrarUsuarios"])){
     $user = $_GET["user"];
 
@@ -492,27 +600,117 @@ if(isset($_GET["MostrarUsuarios"])){
 if(isset($_GET["DesabilitarUsuario"])){
     $iduser = $_GET["iduser"];
 
-    $cuery = "SELECT * FROM tbusers WHERE idusers = $iduser ";                        
-    $result = mysqli_query($con,$cuery);              
-    $numrow = mysqli_num_rows($result);                
-    
-    if($numrow > 0) {
-
-        $cuery = "UPDATE tbusers SET estatus = 'B' WHERE idusers = '$iduser'";
-        $result = mysqli_query($con,$cuery);                                   
-
-        $resp = 'OK';                
-        $response = ['resultado' => $resp ]; 
-        
-    }else{            
+    if ($iduser == 1){
         $resp = 'Error Especifique un id de usuario Valido';                
         $response = ['resultado' => $resp] ;
-    }        
+    }else{
+
+        $cuery = "SELECT * FROM tbusers WHERE idusers = $iduser ";                        
+        $result = mysqli_query($con,$cuery);              
+        $numrow = mysqli_num_rows($result);                
+    
+        if($numrow > 0) {
+            $cuery = "UPDATE tbusers SET estatus = 'B' WHERE idusers = '$iduser'";
+            $result = mysqli_query($con,$cuery);                                   
+
+            $resp = 'OK';                
+            $response = ['resultado' => $resp ]; 
+        
+        }else{            
+            $resp = 'Error Especifique un id de usuario Valido';                
+            $response = ['resultado' => $resp] ;
+        }        
+    }    
     //para cerrar la conexion
     mysqli_close($con);                            
     echo json_encode($response);
     exit();            
 }
 
+//Habilitar usuario
+if(isset($_GET["HabilitarUsuario"])){
+    $iduser = $_GET["iduser"];
 
+    if ($iduser == 1){
+        $resp = 'Error Especifique un id de usuario Valido';                
+        $response = ['resultado' => $resp] ;
+    }else{
+
+        $cuery = "SELECT * FROM tbusers WHERE idusers = $iduser ";                        
+        $result = mysqli_query($con,$cuery);              
+        $numrow = mysqli_num_rows($result);                
+        
+        if($numrow > 0) {
+            $cuery = "UPDATE tbusers SET estatus = 'A' WHERE idusers = '$iduser'";
+            $result = mysqli_query($con,$cuery);                                   
+
+            $resp = 'OK';                
+            $response = ['resultado' => $resp ]; 
+        
+        }else{            
+            $resp = 'Error Especifique un id de usuario Valido';                
+            $response = ['resultado' => $resp] ;
+        }     
+    }
+    //para cerrar la conexion
+    mysqli_close($con);                            
+    echo json_encode($response);
+    exit();            
+}
+
+//cambiar pasword de un usuario por id desde administrador
+if(isset($_GET["NewPasUsuario"])){
+    $iduser = $_GET["iduser"];
+    $npas = $_GET["npas"];
+
+    if ($iduser == 1){
+        
+        $resp = 'Error Especifique un id de usuario Valido';                
+        $response = ['resultado' => $resp] ;
+
+    }else{
+        $cuery = "SELECT * FROM tbusers WHERE idusers = $iduser ";                        
+        $result = mysqli_query($con,$cuery);              
+        $numrow = mysqli_num_rows($result);                    
+    
+        if($numrow > 0) {
+            $cuery = "UPDATE tbusers SET pass = '$npas' WHERE idusers = '$iduser'";
+            $result = mysqli_query($con,$cuery);                                   
+
+            $resp = 'OK';                
+            $response = ['resultado' => $resp ];         
+        }else{            
+            $resp = 'Error Especifique un id de usuario Valido';                
+            $response = ['resultado' => $resp] ;
+        }        
+    }    
+    //para cerrar la conexion
+    mysqli_close($con);                            
+    echo json_encode($response);
+    exit();            
+}
+
+    //obtener vencidos desde principal
+    
+    
+    //cambiar pasword de un usuario por id desde administrador
+if(isset($_GET["ConsulVen"])){
+    $user = $_GET["user"];  
+
+    $fecRes = date('Y-m-d');
+    
+        $cuery = "SELECT * FROM gastosper WHERE usuario = '$user' AND fechaex < '$fecRes' AND estado = 'PENDIENTE' ";                        
+        $result = mysqli_query($con,$cuery);              
+        $numrow = mysqli_num_rows($result);                        
+        if($numrow > 0) {                
+            $response = ['resultado' => $numrow];         //, 'fechaphp' => $fecRes 
+        }else{
+            $response = ['resultado' => $numrow];         //, 'fechaphp' => $fecRes 
+        }
+
+    //para cerrar la conexion
+    mysqli_close($con);                            
+    echo json_encode($response);
+    exit();            
+}
 ?>
